@@ -36,11 +36,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return DateFormat('MMM d').format(date); // Форматирование в "Aug 27"
   }
 
-  final Map<DateTime, String> events = {
-    DateTime(2025, 1, 16): "🎉 Event",
-    DateTime(2025, 1, 20): "📌 Task",
-    DateTime(2025, 1, 25): "✔ Done",
-  };
+  final Map<DateTime, String> events = {};
 
   @override
   Widget build(BuildContext context) {
@@ -104,17 +100,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   color: Colors.orange,
                 ),
               ),
-              calendarBuilders: CalendarBuilders(
-                defaultBuilder: (context, day, focusedDay) {
-                  return _buildDayCell(day, context);
-                },
-                todayBuilder: (context, day, focusedDay) {
-                  return _buildDayCell(day, context, isToday: true);
-                },
-                selectedBuilder: (context, day, focusedDay) {
-                  return _buildDayCell(day, context, isSelected: true);
-                },
-              ),
+              // calendarBuilders: CalendarBuilders(
+              //   defaultBuilder: (context, day, focusedDay) {
+              //     return _buildDayCell(day, context);
+              //   },
+              //   todayBuilder: (context, day, focusedDay) {
+              //     return _buildDayCell(day, context, isToday: true);
+              //   },
+              //   selectedBuilder: (context, day, focusedDay) {
+              //     return _buildDayCell(day, context, isSelected: true);
+              //   },
+              // ),
             ),
           ),
           Flexible(
@@ -123,11 +119,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Text(_selectedDate == _focusedDate
+                  //     ? events.values.toString()
+                  //     : ''),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -149,7 +147,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          _editEvent(context);
+                          // _editEvent(context);
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(Colors.white),
@@ -205,78 +203,82 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
     );
   }
-  void _editEvent(BuildContext context) {
-    if (_selectedDate == null) return;
 
-    String? currentEvent = events[DateTime(_selectedDate!.year, _selectedDate!.month, _selectedDate!.day)];
-
-    TextEditingController controller = TextEditingController(text: currentEvent);
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit Event'),
-          content: TextField(
-            controller: controller,
-            decoration: InputDecoration(hintText: 'Enter event description'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  events[DateTime(_selectedDate!.year, _selectedDate!.month, _selectedDate!.day)] = controller.text;
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text("Save"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildDayCell(DateTime day, BuildContext context,
-      {bool isToday = false, bool isSelected = false}) {
-    String? event = events[DateTime(day.year, day.month, day.day)];
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          decoration: isToday
-              ? BoxDecoration(
-            color: Colors.orangeAccent,
-            shape: BoxShape.circle,
-          )
-              : isSelected
-              ? BoxDecoration(
-            color: Colors.blue,
-            shape: BoxShape.circle,
-          )
-              : null,
-
-          child: Text(
-            day.day.toString(),
-            style: TextStyle(
-              color: isToday ? Colors.white : null,
-              fontWeight: isToday || isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-        ),
-        if (event != null) // Отображаем текст/эмодзи, если он есть
-          Text(
-            event,
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-      ],
-    );
-  }
+  // void _editEvent(BuildContext context) {
+  //   if (_selectedDate == null) return;
+  //
+  //   String? currentEvent = events[DateTime(
+  //       _selectedDate!.year, _selectedDate!.month, _selectedDate!.day)];
+  //
+  //   TextEditingController controller =
+  //       TextEditingController(text: currentEvent);
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text('Edit Event'),
+  //         content: TextField(
+  //           controller: controller,
+  //           decoration: InputDecoration(hintText: 'Enter event description'),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               setState(() {
+  //                 events[DateTime(_selectedDate!.year, _selectedDate!.month,
+  //                     _selectedDate!.day)] = controller.text;
+  //               });
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('Save'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  // Widget _buildDayCell(DateTime day, BuildContext context,
+  //     {bool isToday = false, bool isSelected = false}) {
+  //   String? event = events[DateTime(day.year, day.month, day.day)];
+  //
+  //   return Container(
+  //     decoration: isToday
+  //         ? BoxDecoration(
+  //             color: Colors.orangeAccent,
+  //           )
+  //         : isSelected
+  //             ? BoxDecoration(
+  //                 color: Colors.blue,
+  //               )
+  //             : null,
+  //     child: Column(
+  //       children: [
+  //         Text(
+  //           day.day.toString(),
+  //           style: TextStyle(
+  //             color: isToday ? Colors.white : null,
+  //             fontWeight:
+  //                 isToday || isSelected ? FontWeight.bold : FontWeight.normal,
+  //           ),
+  //         ),
+  //         if (event != null)
+  //           Text(
+  //             event,
+  //             style: TextStyle(
+  //               fontSize: 12,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
